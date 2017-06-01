@@ -11,7 +11,7 @@ gem 'redis-rails'
 
 group :development, :test do
   gem 'spring'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 3.5'
   gem 'capybara'
   gem 'faker'
   gem 'fabrication', "~> 2.2.2"

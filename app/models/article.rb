@@ -1,13 +1,13 @@
 class Article < ActiveRecord::Base
-  validates :title, :presence => true
+  validates :title, :presence => true, :uniqueness => true
   validates :body, :presence => true
 
   belongs_to :author
   has_many :comments
   has_many :taggings
-  has_many :tags, :through => :taggings
+  has_many :tags, through: :taggings
 
-  #default_scope :include => [:comments, :tags]
+  # default_scope { includes [:comments, :tags] }
 
   def to_s
     return title
@@ -29,10 +29,11 @@ class Article < ActiveRecord::Base
 
   def self.most_popular
     # all.sort_by{|a| a.comments.count }.last
-    joins(:comments)
-      .select('articles.*, COUNT(comments) as comment_count')
-      .group('articles.id')
-      .order('comment_count DESC').first
+    # joins(:comments)
+    #   .select('articles.*, COUNT(comments) as comment_count')
+    #   .group('articles.id')
+    #   .order('comment_count DESC').first
+    joins(:comments).first
   end
 
   def self.random
