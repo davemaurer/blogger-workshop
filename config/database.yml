@@ -1,0 +1,19 @@
+development:
+  encoding: unicode
+  adapter: postgresql
+  database: blogger_advanced_development
+  pool: 5
+  timeout: 5000
+test:
+  encoding: unicode
+  adapter: postgresql
+  database: blogger_advanced_test
+  pool: 5
+  timeout: 5000
+
+production:
+  encoding: unicode
+  adapter: postgresql
+  database: blogger_advanced_production
+  pool: 5
+  timeout: 5000
