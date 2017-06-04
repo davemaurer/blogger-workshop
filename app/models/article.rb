@@ -59,7 +59,6 @@ class Article < ActiveRecord::Base
   def self.for_dashboard
     # order('created_at DESC').limit(5)
     order(:id)
-      .all
       .only(:order)
       .from(Article.all.reverse_order.limit(5), 'articles')
   end

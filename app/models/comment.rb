@@ -4,7 +4,10 @@ class Comment < ActiveRecord::Base
   validates :article_id, presence: true
 
   def self.for_dashboard
-    order('created_at DESC').limit(5).all
+    # order('created_at DESC').limit(5).all
+    order(:id)
+      .only(:order)
+      .from(Comment.all.reverse_order.limit(5), 'comments')
   end
 
   def word_count
