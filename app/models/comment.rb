@@ -1,7 +1,7 @@
 class Comment < ActiveRecord::Base
-  belongs_to :article
+  belongs_to :article, counter_cache: true
 
-  validates :article_id, :presence => true
+  validates :article_id, presence: true
 
   def self.for_dashboard
     order('created_at DESC').limit(5).all

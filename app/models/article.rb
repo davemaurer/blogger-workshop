@@ -29,15 +29,18 @@ class Article < ActiveRecord::Base
 
   def self.most_popular
     # all.sort_by{|a| a.comments.count }.last
-    # joins(:comments)
-    #   .select('articles.*, COUNT(comments) as comment_count')
-    #   .group('articles.id')
-    #   .order('comment_count DESC').first
-    joins(:comments).first
+    joins(:comments)
+      .select('articles.*, COUNT(comments) as comment_count')
+      .group('articles.id')
+      .order('comment_count DESC').first
   end
 
   def self.random
     order('RANDOM()').limit(1).first
+  end
+
+  def comment_count
+    comments.count
   end
 
   def self.valid_ids
@@ -54,7 +57,11 @@ class Article < ActiveRecord::Base
   end
 
   def self.for_dashboard
-    order('created_at DESC').limit(5)
+    # order('created_at DESC').limit(5)
+    order(:id)
+      .all
+      .only(:order)
+      .from(Article.all.reverse_order.limit(5), 'articles')
   end
 
   def word_count
@@ -62,7 +69,8 @@ class Article < ActiveRecord::Base
   end
 
   def self.total_word_count
-    all.inject(0) {|total, a| total += a.word_count }
+    all.select(:body).map {|article| article.body.split(" ")}.flatten.count
+    # all.select(:body).inject(0) {|total, a| total += a.word_count }
   end
 
   def self.generate_samples(quantity = 1000)
@@ -84,3 +92,12 @@ class Article < ActiveRecord::Base
     end
   end
 end
+
+# Article.select(:title, :created_at).from(Article.order('created_at DESC').limit(5), 'articles')
+# 27-93ms
+# Article.order('created_at DESC').only(:order).from(Article.order('created_at DESC').select(:title, :created_at).limit(5), 'articles')
+# 25-76ms
+# Article.select(:title, :created_at).only(:order).from(Article.order('created_at DESC').limit(5), 'articles')
+# 15-45ms
+
+
