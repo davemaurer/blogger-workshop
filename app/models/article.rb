@@ -29,19 +29,20 @@ class Article < ActiveRecord::Base
 
   def self.most_popular
     # all.sort_by{|a| a.comments.count }.last
-    joins(:comments)
-      .select('articles.*, COUNT(comments) as comment_count')
-      .group('articles.id')
-      .order('comment_count DESC').first
+    # joins(:comments)
+    #   .select('articles.*, COUNT(comments) as comment_count')
+    #   .group('articles.id')
+    #   .order('comment_count DESC').first
+    order('comments_count DESC').limit(1)
   end
 
   def self.random
     order('RANDOM()').limit(1).first
   end
 
-  def comment_count
-    comments.count
-  end
+  # def comment_count
+  #   comments.count
+  # end
 
   def self.valid_ids
     Article.select(:id).collect{|a| a.id}
