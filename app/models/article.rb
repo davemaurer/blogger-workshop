@@ -45,7 +45,7 @@ class Article < ActiveRecord::Base
   # end
 
   def self.valid_ids
-    Article.select(:id).collect{|a| a.id}
+    Article.pluck(:id)
   end
 
   def self.search_by_tag_name(tag_name)
