@@ -69,7 +69,8 @@ class Article < ActiveRecord::Base
   end
 
   def self.total_word_count
-    all.select(:body).map {|article| article.body.split(" ")}.flatten.count
+    @article_word_count ||= pluck(:body).reduce(0) { |s, body| s += body.split(" ").count }
+    # all.pluck(:body).map { |body| body.split(" ") }.flatten.count
     # all.select(:body).inject(0) {|total, a| total += a.word_count }
   end
 
@@ -99,5 +100,3 @@ end
 # 25-76ms
 # Article.select(:title, :created_at).only(:order).from(Article.order('created_at DESC').limit(5), 'articles')
 # 15-45ms
-
-

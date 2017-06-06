@@ -15,6 +15,8 @@ class Comment < ActiveRecord::Base
   end
 
   def self.total_word_count
-    all.inject(0) {|total, a| total += a.word_count }
+    @comment_word_count ||= all.pluck(:body).reduce(0) { |s, body| s += body.split(" ").count }
+    # all.inject(0) {|total, a| total += a.word_count }
+    # all.select(:body).map(&:word_count).flatten.count
   end
 end
