@@ -33,7 +33,7 @@ class Article < ActiveRecord::Base
     #   .select('articles.*, COUNT(comments) as comment_count')
     #   .group('articles.id')
     #   .order('comment_count DESC').first
-    order('comments_count DESC').limit(1)
+    order('comments_count DESC').first
   end
 
   def self.random
